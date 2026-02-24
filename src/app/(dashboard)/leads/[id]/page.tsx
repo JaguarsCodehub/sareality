@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { getDocument, createDocument, queryDocuments } from "@/config/db";
 import { updateDocument } from "@/config/db";
-import { LeadDocument } from "@/app/(dashboard)/leads/page";
+import { LeadDocument } from "@/types/lead";
 import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

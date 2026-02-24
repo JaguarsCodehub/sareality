@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useAuth } from "@/context/AuthContext";
 import { queryDocuments, updateDocument, createDocument } from "@/config/db";
 import { where, orderBy, QueryConstraint } from "firebase/firestore";
-import { LeadDocument } from "@/app/(dashboard)/leads/page";
+import { LeadDocument } from "@/types/lead";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Phone, Calendar } from "lucide-react";
