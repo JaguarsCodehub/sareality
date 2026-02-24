@@ -85,12 +85,12 @@ export async function updateDocument<T extends DocumentData>(
  */
 export async function queryDocuments<T = DocumentData>(
   collectionName: DbCollection,
-  constraints: QueryConstraint[]
+  constraints: any[]
 ): Promise<(T & { id: string })[]> {
   const colRef = collection(db, collectionName);
   const q = query(colRef, ...constraints);
   const querySnapshot = await getDocs(q);
-  
+
   return querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),

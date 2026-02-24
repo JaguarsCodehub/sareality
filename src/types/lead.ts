@@ -16,7 +16,7 @@ export const leadFormSchema = z.object({
   email: z.string().email("Invalid email").optional().or(z.literal("")),
   leadSource: z.enum(LeadSources),
   referralName: z.string().optional(),
-  
+
   // Real Estate Specific Fields
   propertyTypeInterest: z.array(z.enum(PropertyTypes)).min(1, "Select at least one property type"),
   bhkRequirement: z.array(z.enum(BHKRequirements)).min(1, "Select at least one BHK requirement"),
@@ -31,3 +31,14 @@ export const leadFormSchema = z.object({
 });
 
 export type LeadFormValues = z.infer<typeof leadFormSchema>;
+
+export type LeadDocument = LeadFormValues & {
+  id: string;
+  stage: string;
+  leadScore: number;
+  assignedAgentId: string;
+  assignedAgentName: string;
+  isPublic?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createdAt: any;
+};

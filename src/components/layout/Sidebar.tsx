@@ -1,14 +1,15 @@
 import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
-import { 
-  Building2, 
-  LayoutDashboard, 
-  Users, 
-  Kanban, 
+import {
+  Building2,
+  LayoutDashboard,
+  Users,
+  Kanban,
   PhoneCall,
   Settings,
   LogOut,
-  Menu
+  Menu,
+  ClipboardList
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -28,23 +29,23 @@ export function Sidebar() {
 
   return (
     <div className={cn(
-      "flex flex-col h-screen bg-slate-900 text-slate-300 transition-all duration-300",
+      "flex flex-col h-screen bg-sidebar text-sidebar-foreground transition-all duration-300 border-r border-sidebar-border shadow-sm",
       collapsed ? "w-20" : "w-64"
     )}>
       {/* Logo & Toggle */}
-      <div className="flex items-center justify-between h-16 px-4 py-4 border-b border-slate-800">
+      <div className="flex items-center justify-between h-16 px-4 py-4 border-b border-sidebar-border">
         {!collapsed && (
-          <div className="flex items-center gap-2 text-white font-bold text-lg">
+          <div className="flex items-center gap-2 text-sidebar-foreground font-bold text-lg">
             <Building2 className="text-primary" />
             <span>SA Reality</span>
           </div>
         )}
         {collapsed && <Building2 className="text-primary w-full" />}
-        
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="text-slate-400 hover:text-white"
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-sidebar-foreground/50 hover:text-primary hover:bg-sidebar-accent"
           onClick={() => setCollapsed(!collapsed)}
         >
           <Menu size={20} />
@@ -61,12 +62,12 @@ export function Sidebar() {
               href={item.href}
               className={cn(
                 "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
-                isActive 
-                  ? "bg-primary text-white font-medium" 
-                  : "hover:bg-slate-800 hover:text-white"
+                isActive
+                  ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-sm"
+                  : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               )}
             >
-              <item.icon size={20} className={cn(isActive ? "text-white" : "text-slate-400")} />
+              <item.icon size={20} className={cn(isActive ? "text-sidebar-primary-foreground" : "text-sidebar-foreground/60")} />
               {!collapsed && <span>{item.name}</span>}
             </a>
           );
@@ -75,19 +76,31 @@ export function Sidebar() {
         {/* Admin Section (Only visible to Admin+) */}
         {(profile?.role === "admin" || profile?.role === "super_admin") && (
           <>
-            <div className={cn("pt-4 pb-2 px-3 text-xs font-semibold text-slate-500 uppercase", collapsed && "hidden")}>
+            <div className={cn("pt-4 pb-2 px-3 text-xs font-semibold text-sidebar-foreground/40 uppercase", collapsed && "hidden")}>
               Administration
             </div>
+            <a
+              href="/assignment"
+              className={cn(
+                "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
+                pathname.startsWith("/assignment")
+                  ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-sm"
+                  : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              )}
+            >
+              <ClipboardList size={20} className={pathname.startsWith("/assignment") ? "text-sidebar-primary-foreground" : "text-sidebar-foreground/60"} />
+              {!collapsed && <span>Assignment</span>}
+            </a>
             <a
               href="/settings"
               className={cn(
                 "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
-                pathname.startsWith("/settings") 
-                  ? "bg-primary text-white font-medium" 
-                  : "hover:bg-slate-800 hover:text-white"
+                pathname.startsWith("/settings")
+                  ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-sm"
+                  : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               )}
             >
-              <Settings size={20} className="text-slate-400" />
+              <Settings size={20} className={pathname.startsWith("/settings") ? "text-sidebar-primary-foreground" : "text-sidebar-foreground/60"} />
               {!collapsed && <span>Settings</span>}
             </a>
           </>
@@ -95,22 +108,22 @@ export function Sidebar() {
       </nav>
 
       {/* User Profile / Footer */}
-      <div className="p-4 border-t border-slate-800">
+      <div className="p-4 border-t border-sidebar-border">
         <div className={cn("flex items-center gap-3", collapsed ? "justify-center" : "")}>
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
             {profile?.name?.charAt(0) || "U"}
           </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{profile?.name || "User"}</p>
-              <p className="text-xs text-slate-500 capitalize">{profile?.role?.replace("_", " ")}</p>
+              <p className="text-sm font-medium text-sidebar-foreground truncate">{profile?.name || "User"}</p>
+              <p className="text-xs text-sidebar-foreground/50 capitalize">{profile?.role?.replace("_", " ")}</p>
             </div>
           )}
         </div>
         {!collapsed && (
-          <Button 
-            variant="ghost" 
-            className="w-full mt-4 justify-start text-slate-400 hover:text-rose-400 hover:bg-slate-800"
+          <Button
+            variant="ghost"
+            className="w-full mt-4 justify-start text-sidebar-foreground/60 hover:text-rose-500 hover:bg-rose-50"
             onClick={signOut}
           >
             <LogOut size={18} className="mr-2" />
@@ -118,10 +131,10 @@ export function Sidebar() {
           </Button>
         )}
         {collapsed && (
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
-            className="w-full mt-4 text-slate-400 hover:text-rose-400 hover:bg-slate-800"
+            className="w-full mt-4 text-sidebar-foreground/60 hover:text-rose-500 hover:bg-rose-50"
             onClick={signOut}
           >
             <LogOut size={18} />
